@@ -28,21 +28,21 @@ public class SimpleHttpServer {
         }
         this.port = port;
         //TODO#5 RequestChannel() 초기화 합니다.
-        requestChannel = new RequestChannel();
+        requestChannel = null;
 
         //TODO#6 workerThreadPool 초기화 합니다.
-        workerThreadPool = new WorkerThreadPool(requestChannel);
+        workerThreadPool = null;
     }
 
     public void start(){
         //TODO#7 workerThreadPool을 시작 합니다.
-        workerThreadPool.start();
+
 
         try(ServerSocket serverSocket = new ServerSocket(8080);){
             while(true){
                 Socket client = serverSocket.accept();
                 //TODO#8 Queue(requestChannel)에 HttpJob 객체를 배치 합니다.
-                requestChannel.addHttpJob(new HttpJob(client));
+
             }
         }catch (IOException e){
             log.error("server error:{}",e);
