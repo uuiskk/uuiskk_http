@@ -58,16 +58,9 @@ public class HttpJob implements Executable {
         }
 
         //TODO#6 requestURI()을 이용해서 Context에 등록된 HttpService를 실행 합니다.
-        Context context = ContextHolder.getApplicationContext();
+        Context context = null;
         HttpService httpService = null;
 
-        try {
-            httpService = (HttpService) context.getAttribute(httpRequest.getRequestURI());
-            httpService.service(httpRequest, httpResponse);
-        }catch (ObjectNotFoundException e){
-            log.error("Service Not Found : {}",e.getMessage());
-            return;
-        }
 
         try {
             if(Objects.nonNull(client) && client.isConnected()) {
