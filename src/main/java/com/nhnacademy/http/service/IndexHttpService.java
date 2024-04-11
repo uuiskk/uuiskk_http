@@ -10,7 +10,10 @@ import java.io.PrintWriter;
 
 @Slf4j
 public class IndexHttpService implements HttpService{
-    //TODO#2 /index.html을  처리하는 HttpService 입니다.
+    /* TODO#2 IndexHttpService 구현
+       http://localhost:8080/index.html
+       요청을 처리하는 HttpService 입니다.
+    */
 
     @Override
     public void doGet(HttpRequest httpRequest, HttpResponse httpResponse) {
