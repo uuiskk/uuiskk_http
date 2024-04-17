@@ -42,7 +42,7 @@ public class HttpRequestImpl implements HttpRequest {
     }
 
     @Override
-    public Map<String, String[]> getParameterMap() {
+    public Map<String, String> getParameterMap() {
         return null;
     }
 
