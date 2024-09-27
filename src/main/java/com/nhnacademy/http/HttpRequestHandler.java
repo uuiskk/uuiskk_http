@@ -40,6 +40,57 @@ public class HttpRequestHandler implements Runnable {
                 </body>
             </html>
         */
+        StringBuilder requestBuilder = new StringBuilder();
+
+        while(true) {
+            try(BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(client.getInputStream()));
+                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(client.getOutputStream()));
+            ) {
+                log.debug("------HTTP-REQUEST_start()");
+                while(true) {
+                    String line = bufferedReader.readLine();
+                    requestBuilder.append(line);
+                    log.debug("{}", line);
+
+                    if(line == null || line.length() == 0){
+                        break;
+                    }
+                }
+                log.debug("-----HTTP-REQUEST_end()");
+
+                StringBuilder responseBody = new StringBuilder();
+                responseBody.append("<html>")
+                        .append("<body>")
+                        .append("<h1>hello hava</h1>")
+                        .append("</body>")
+                        .append("</html>");
+
+                StringBuilder responseHeader = new StringBuilder();
+
+                responseHeader.append("HTTP/1.0 200 OK\n");
+                responseHeader.append(String.format("Server: HTTP server/0.1%s", System.lineSeparator()));
+                responseHeader.append("Content-type: text/html; charset=UTF-8\n");
+                responseHeader.append(String.format("Connection Closed%s", System.lineSeparator()));
+                responseHeader.append("Content-Length:").append(responseBody.length()).append(System.lineSeparator());
+
+                bufferedWriter.write(String.valueOf(responseHeader) + System.lineSeparator());
+                bufferedWriter.write(String.valueOf(responseBody));
+
+                bufferedWriter.flush();
+
+                log.debug("header:{}", responseHeader);
+                log.debug("body:{}", responseBody);
+
+            } catch (IOException e) {
+                log.error("sock error : {}", e);
+            } finally {
+                try {
+                    client.close();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
 
     }
 }
