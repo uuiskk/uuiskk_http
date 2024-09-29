@@ -22,25 +22,35 @@ import java.nio.charset.Charset;
 public class HttpResponseImpl implements HttpResponse {
     //TODO#4 HttpResponse를 구현 합니다.
 
+    private static final String DEFAULT_CHARACTER_SET = "UTF-8";
+
     private final Socket socket;
+    private String characterEncoding;
+    private PrintWriter printWriter;
 
 
     public HttpResponseImpl(Socket socket){
         this.socket = socket;
+        this.characterEncoding = DEFAULT_CHARACTER_SET;
+        try {
+            this.printWriter = new PrintWriter(this.socket.getOutputStream());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
-    
+
     @Override
     public PrintWriter getWriter() throws IOException {
-        return null;
+        return printWriter;
     }
 
     @Override
     public void setCharacterEncoding(String charset) {
-
+        this.characterEncoding = charset;
     }
 
     @Override
     public String getCharacterEncoding() {
-        return null;
+        return this.characterEncoding;
     }
 }
