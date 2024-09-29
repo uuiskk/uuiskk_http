@@ -72,8 +72,20 @@ public class HttpJob implements Executable {
         */
 
 
+        HttpService httpService = null;
+        if(httpRequest.getRequestURI().equals("/index.html"))
+        {
+            httpService = new IndexHttpService();
+        }
+        else
+        {
+            httpService = new InfoHttpService();
+        }
+        httpService.service(httpRequest,httpResponse);
+
         try {
-            if(Objects.nonNull(client) && client.isConnected()) {
+            if(Objects.nonNull(client) && client.isConnected())
+            {
                 client.close();
             }
         } catch (IOException e) {

@@ -39,6 +39,33 @@ public class InfoHttpService implements HttpService {
     @Override
     public void doGet(HttpRequest httpRequest, HttpResponse httpResponse) {
         //doGet 구현
+        String responseBody = null;
+
+        try (PrintWriter printWriter = httpResponse.getWriter();){
+            responseBody = ResponseUtils.tryGetBodyFormFile(httpRequest.getRequestURI());
+
+            String id = "${" + httpRequest.getParameter("id") +"}";
+            String name = "${" + URLDecoder.decode(httpRequest.getParameter("name")) +"}";
+            String age = "${" + httpRequest.getParameter("age") +"}";
+
+            responseBody = responseBody.replace("${id}",id);
+            responseBody = responseBody.replace("${name}",name);
+            responseBody = responseBody.replace("${age}",age);
+
+
+
+
+            String responseHeader = ResponseUtils.createResponseHeader(200, "UTF-8",responseBody.getBytes().length);
+            printWriter.write(responseHeader);
+            printWriter.write(responseBody);
+            printWriter.flush();
+            printWriter.close();
+            log.debug("Header: {}",responseHeader);
+            log.debug("Body: {}",responseBody);
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 }
