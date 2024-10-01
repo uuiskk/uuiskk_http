@@ -70,8 +70,10 @@ public class HttpJob implements Executable {
         }
 
         //TODO#6 requestURI()을 이용해서 Context에 등록된 HttpService를 실행 합니다.
-        Context context = null;
-        HttpService httpService = null;
+        Context context = ContextHolder.getApplicationContext();
+        HttpService httpService = (HttpService) context.getAttribute(httpRequest.getRequestURI());
+        httpService.service(httpRequest, httpResponse);
+
 
 
         try {
